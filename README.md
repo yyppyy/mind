@@ -44,7 +44,7 @@ python3 run_commands.py --profile=profiles/02_setup_normal_switch.yaml
 
 <br></br>
 ## ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) Fastswap Performance evaluation with memory traces (Fig. 6 left)
-
+**IMPORTANT** **fastswap kernel occasionally runs into error in our setting. Please reach out to us if you see VM/server stall abnormally.**
 *Skip this step if you already loaded target traces for MIND*
 - Every time you load traces for new application, it will automatically erase the previous ones
 - Go inside the script directory and load memory access traces for Tensorflow
@@ -69,7 +69,6 @@ python3 run_commands.py --profile profiles/04_macro_bench_tf.yaml
     - `tf`: 50000,  `gc`: 50000, `ma`: 35000, `mc`: 20000
 
 The result of the experiment will be downloaded at `~/Downloads/04_macro_bench_[APP]`.
-**IMPORTANT** **fastswap kernel occasionally runs into error in our setting. Please reach out to us if you see VM/server stall abnormally.**
 
 To compute the final number of the result, please run
 ```bash
