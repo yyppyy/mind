@@ -1,15 +1,15 @@
 # Profile for tasks/commands in order
 
 # = Prepare cluster =
-- name: start VMs
-  job: setup
-  per_command_delay: 1
-  post_delay: 300
+#- name: start VMs
+#  job: setup
+#  per_command_delay: 1
+#  post_delay: 300
 
 - name: restart and reset VMs
   job: reset
   per_command_delay: 1
-  post_delay: 300
+  post_delay: 500
 
 - name: update repo
   job: update
