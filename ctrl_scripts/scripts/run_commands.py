@@ -155,7 +155,9 @@ def build_vm_reboot_command(server_ip, user, key, vm_name):
     return cmd
 
 def build_vm_shutdown_command(server_ip, user, key, vm_name):
-    cmd = "sudo virsh shutdown " + vm_name
+    cmd = "sudo virsh shutdown " + vm_name + " && "
+    cmd += "sleep 400 && "
+    cmd += "sudo virsh destroy " + vm_name
     cmd = build_ssh_base(server_ip, user, key) + build_ssh_cmd(cmd)
     return cmd
 
