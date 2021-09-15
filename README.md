@@ -45,7 +45,7 @@ python3 run_commands.py --profile=profiles/02_setup_normal_switch.yaml
 <br></br>
 ## ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) Fastswap Performance evaluation with memory traces (Fig. 6 left)
 
-**IMPORTANT** **fastswap kernel occasionally runs into error in our setting. Please reach out to us if you see VM/server stall abnormally.**
+**[IMPORTANT]** *fastswap kernel occasionally runs into error regarding NIC driver. Please reach out to us if you see VM/server stall abnormally.*
 
 *Skip this step if you already loaded target traces for MIND*
 - Every time you load traces for new application, it will automatically erase the previous ones
@@ -57,7 +57,7 @@ python3 run_commands.py --profile=profiles/05_load_trace_tf.yaml
 
 After the script for loading traces is finished, we can run the following command to run an experiment with the TensorFlow memory traces we just loaded:
 
-**IMPORTANT:** *Please wait for 10~12 min to let the following command finish, because FastSwap VMs will take some time to boot up. If it is forcely canceled in the middle  (e.g., try to reboot VMs), it can cause an error in host machine's NIC—it will require our team at Yale to visit and reboot the host machine physically.*
+**[IMPORTANT]** *Please wait for up to 10~12 min to let the following command finish, because FastSwap VMs will take some time to boot up. If it is forcely canceled in the middle  (e.g., try to reboot VMs), it can cause an error in host machine's NIC—it will require our team at Yale to visit and reboot the host machine physically.*
 
 ```bash
 python3 run_commands.py --profile profiles/04_macro_bench_tf.yaml
