@@ -565,6 +565,8 @@ static inline void file_pos_write(struct file *file, loff_t pos)
 
 SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_read, called by %s\n", current->comm);
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
@@ -581,6 +583,8 @@ SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 		size_t, count)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_write, called by %s\n", current->comm);
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
