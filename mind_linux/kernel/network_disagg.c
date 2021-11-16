@@ -6,7 +6,7 @@
 #include <disagg/profile_points_disagg.h>
 #include <linux/socket.h>
 
-static unsigned char _destip[5] = {10,10,10,1,'\0'};
+static unsigned char _destip[5] = {192,168,122,63,'\0'};
 
 static const size_t _recv_buf_size = 2 * DISAGG_NET_MAX_SIZE_ONCE;
 static spinlock_t send_msg_lock, recv_msg_lock;

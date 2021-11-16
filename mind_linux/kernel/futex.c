@@ -69,7 +69,7 @@
 #include <linux/fault-inject.h>
 
 #include <asm/futex.h>
-
+#include <disagg/network_disagg.h>
 #include "locking/rtmutex_common.h"
 
 /*
@@ -1532,6 +1532,7 @@ double_unlock_hb(struct futex_hash_bucket *hb1, struct futex_hash_bucket *hb2)
 static int
 futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
 {
+
 	struct futex_hash_bucket *hb;
 	struct futex_q *this, *next;
 	union futex_key key = FUTEX_KEY_INIT;
@@ -2629,6 +2630,7 @@ out:
 static int futex_wait(u32 __user *uaddr, unsigned int flags, u32 val,
 		      ktime_t *abs_time, u32 bitset)
 {
+
 	struct hrtimer_sleeper timeout, *to = NULL;
 	struct restart_block *restart;
 	struct futex_hash_bucket *hb;
@@ -3574,10 +3576,31 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		struct timespec __user *, utime, u32 __user *, uaddr2,
 		u32, val3)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_futex, called by %s\n", current->comm);
 	struct timespec ts;
 	ktime_t t, *tp = NULL;
 	u32 val2 = 0;
 	int cmd = op & FUTEX_CMD_MASK;
+	if (cmd == FUTEX_WAIT) {
+		void * retbuf;
+		u32 type = 1;
+		u32 len_payload = 0;
+		u32 max_len_retbuf = 1024;
+                send_msg_to_memory(type, NULL, len_payload, retbuf, max_len_retbuf);
+
+		return 1;
+	}
+
+	if (cmd == FUTEX_WAKE) {
+		void * retbuf;
+                u32 type = 0;
+                u32 len_payload = 0;
+                u32 max_len_retbuf = 1024;
+                send_msg_to_memory(type, NULL, len_payload, retbuf, max_len_retbuf);
+
+                return 1;
+	}
 
 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
 		      cmd == FUTEX_WAIT_BITSET ||

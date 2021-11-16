@@ -1043,6 +1043,8 @@ EXPORT_SYMBOL(filp_clone_open);
 
 long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_open, called by %s\n", current->comm);
 	struct open_flags op;
 	int fd = build_open_flags(flags, mode, &op);
 	struct filename *tmp;
@@ -1152,6 +1154,8 @@ EXPORT_SYMBOL(filp_close);
  */
 SYSCALL_DEFINE1(close, unsigned int, fd)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_close, called by %s\n", current->comm);
 	int retval = __close_fd(current->files, fd);
 
 	/* can't restart close syscall because file table entry was cleared */
