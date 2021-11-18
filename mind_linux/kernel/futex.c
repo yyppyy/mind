@@ -3584,8 +3584,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 	int cmd = op & FUTEX_CMD_MASK;
 	if (cmd == FUTEX_WAIT) {
 		printk("in futex_wait");
-		int ret;
-		int * retbuf = &ret;
+		int ret = 0;
+		void * retbuf = &ret;
 		u32 type = 1;
 		u32 len_payload = 0;
 		u32 max_len_retbuf = 1024;
@@ -3596,8 +3596,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 
 	if (cmd == FUTEX_WAKE) {
 		printk("in futex_wake");
-		int ret;
-		int * retbuf = &ret;
+		int ret = 0;
+		void * retbuf = &ret;
                 u32 type = 0;
                 u32 len_payload = 0;
                 u32 max_len_retbuf = 1024;
