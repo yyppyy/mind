@@ -3582,28 +3582,32 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 	ktime_t t, *tp = NULL;
 	u32 val2 = 0;
 	int cmd = op & FUTEX_CMD_MASK;
-	if (cmd == FUTEX_WAIT) {
+	printk("current program is");
+	printk(current->comm);
+	if (cmd == FUTEX_WAIT && !strcmp(current->comm, "test")) {
+		int ret;
 		printk("in futex_wait");	
 		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
 		u32 type = 1;
 		u32 len_payload = sizeof(NULL);
 		u32 max_len_retbuf = sizeof(*reply);
-                send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
+                ret = send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
 
-		return 1;
+		return 0;
 	}
 
-	if (cmd == FUTEX_WAKE) {
+	if (cmd == FUTEX_WAKE && !strcmp(current->comm, "test")) {
+		int ret;
 		printk("in futex_wake");
 		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
                 u32 type = 0;
-                u32 len_payload = 0;
+                u32 len_payload = sizeof(NULL);
                 u32 max_len_retbuf = sizeof(*reply);
-                send_msg_to_memory(type, NULL, len_payload, reply, max_len_retbuf);
+		ret = send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
 
-                return 1;
+                return 0;
 	}
 
 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
