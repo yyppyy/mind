@@ -3584,12 +3584,12 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 	int cmd = op & FUTEX_CMD_MASK;
 	if (cmd == FUTEX_WAIT) {
 		printk("in futex_wait");	
-		uu32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
+		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
 		u32 type = 1;
-		u32 len_payload = 0;
+		u32 len_payload = sizeof(NULL);
 		u32 max_len_retbuf = sizeof(*reply);
-                send_msg_to_memory(type, NULL, len_payload, reply, max_len_retbuf);
+                send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
 
 		return 1;
 	}
