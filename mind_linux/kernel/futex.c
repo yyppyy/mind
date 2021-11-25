@@ -3582,30 +3582,37 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 	ktime_t t, *tp = NULL;
 	u32 val2 = 0;
 	int cmd = op & FUTEX_CMD_MASK;
-	printk("current program is");
-	printk(current->comm);
-	if (cmd == FUTEX_WAIT && !strcmp(current->comm, "test")) {
-		int ret;
+	u32 uaddr_val;
+
+	if (copy_from_user(&uaddr_val, uaddr, sizeof(uaddr_val)) != 0) {
+		return -EFAULT;
+	}
+
+	printk("val %u", val);
+	printk("uaddr val %u", uaddr_val);
+	if (cmd == FUTEX_WAIT && val == uaddr_val && !strcmp(current->comm, "test")) {
 		printk("in futex_wait");	
-		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
-		
+		u32 * poll = kmalloc(sizeof(u32), GFP_KERNEL);
+		*poll = 1;	
 		u32 type = 1;
 		u32 len_payload = sizeof(NULL);
-		u32 max_len_retbuf = sizeof(*reply);
-                ret = send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
+		u32 max_len_retbuf = sizeof(*poll);
+                
+		while (*poll) {
+			send_msg_to_memory(type, NULL, len_payload, poll, sizeof(u32));
+		}
 
 		return 0;
 	}
 
 	if (cmd == FUTEX_WAKE && !strcmp(current->comm, "test")) {
-		int ret;
 		printk("in futex_wake");
 		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
                 u32 type = 0;
                 u32 len_payload = sizeof(NULL);
                 u32 max_len_retbuf = sizeof(*reply);
-		ret = send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
+		send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
 
                 return 0;
 	}
