@@ -1166,8 +1166,8 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_close, called by %s\n", current->comm);
-	if(fdset_contains(&D_FDSET, fd)){
-		fdset_remove(&D_FDSET, fd);
+	if(fdset_contains(fd)){
+		fdset_remove(fd);
 		return disaggr_close_file(fd);
 	}
 	int retval = __close_fd(current->files, fd);

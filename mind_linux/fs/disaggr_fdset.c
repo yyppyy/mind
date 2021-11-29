@@ -1,6 +1,9 @@
 #include <linux/slab.h>
 #include "disaggr_fdset.h"
 
+
+disaggr_fdset D_FDSET;
+
 fdset_node* fdnode_create(int val){
     fdset_node *node = kmalloc(sizeof(fdset_node), GFP_KERNEL);
     node->val = val;
@@ -24,7 +27,8 @@ disaggr_fdset* fdset_create(void){
 
 
 
-void fdset_add(disaggr_fdset* set, int val){
+void fdset_add(int val){
+    disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
@@ -38,7 +42,8 @@ void fdset_add(disaggr_fdset* set, int val){
     curr->next = node;
 }
 
-int fdset_contains(disaggr_fdset* set, int val){
+int fdset_contains(int val){
+    disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
@@ -50,8 +55,9 @@ int fdset_contains(disaggr_fdset* set, int val){
     return 0;
 }
 
-void fdset_remove(disaggr_fdset* set, int val){
-  int hash_idx = set->num_buckets % val;
+void fdset_remove(int val){
+    disaggr_fdset* set = &D_FDSET;
+    int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* last = curr;
     while(curr){

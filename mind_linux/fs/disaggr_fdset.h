@@ -14,16 +14,15 @@ struct disaggr_fdset{
 };
 
 
-disaggr_fdset D_FDSET;
 
 //current->tgid; to allow for multiple processes.
 fdset_node* fdnode_create(int val);
 
 disaggr_fdset* fdset_create(void);
 
-void fdset_add(disaggr_fdset* set, int val);
+void fdset_add(int val);
 
-int fdset_contains(disaggr_fdset* set, int val);
+int fdset_contains(int val);
 
-void fdset_remove(disaggr_fdset* set, int val);
+void fdset_remove(int val);
 #endif
