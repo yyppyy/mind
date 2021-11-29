@@ -26,7 +26,7 @@
 #include <asm/unistd.h>
 
 #include "disaggr_fdset.h"
-#include "disaggr.h"
+#include "disaggr_fs.h"
 
 const struct file_operations generic_ro_fops = {
 	.llseek		= generic_file_llseek,

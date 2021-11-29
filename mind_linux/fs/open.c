@@ -33,7 +33,7 @@
 #include <linux/compat.h>
 
 #include "internal.h"
-#include "disaggr.h"
+#include "disaggr_fs.h"
 #include "disaggr_fdset.h"
 
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
