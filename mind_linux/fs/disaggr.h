@@ -35,7 +35,7 @@ int disaggr_write_file(unsigned int fd, char* usr_buf, size_t num_bytes){
     write_file_res_t response;
     request.num_chars = num_bytes;
     send_msg_to_memory(MT_WRITE, &request, sizeof(request),&response, sizeof(&response));
-    return response.bytes
+    return response.bytes_written;
 }
 
 int disaggr_close_file(unsigned int fd){

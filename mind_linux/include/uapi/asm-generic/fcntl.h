@@ -63,7 +63,7 @@
 #define O_CLOEXEC	02000000	/* set close_on_exec */
 #endif
 #ifndef O_DISAGGR
-#define O_DISAGGR	08000000	/* set close_on_exec */
+#define O_DISAGGR	07000000	/* set close_on_exec */
 #endif
 
 /*

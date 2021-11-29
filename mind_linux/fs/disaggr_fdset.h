@@ -35,7 +35,7 @@ disaggr_fdset* fdset_create(){
 
 
 
-void fdset_add(fdset* set, int val){
+void fdset_add(disaggr_fdset* set, int val){
     int hash_idx = set->num_buckets % val;
     int* curr = set->entries[hash_idx];
     fdset_node* node = fdnode_create(val);
@@ -49,7 +49,7 @@ void fdset_add(fdset* set, int val){
     curr->next = node;
 }
 
-int fdset_contains(fdset* set, int val){
+int fdset_contains(disaggr_fdset* set, int val){
     int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->entries[hash_idx];
     while(curr){
@@ -61,7 +61,7 @@ int fdset_contains(fdset* set, int val){
     return 0;
 }
 
-void fdset_remove(fdset* set, int val){
+void fdset_remove(disaggr_fdset* set, int val){
   int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->entries[hash_idx];
     fdset_node* last = curr;
