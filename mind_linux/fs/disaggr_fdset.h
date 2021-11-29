@@ -1,15 +1,17 @@
 #include <linux/slab.h>
 
-typedef struct{
-    int** buckets;
-    int num_buckets;
-} disaggr_fdset;
-
 typedef struct fdset_node fdset_node;
 struct fdset_node{
     int val;
     fdset_node* next;
 };
+
+typedef struct disaggr_fdset disaggr_fdset;
+struct disaggr_fdset{
+    fdset_node** buckets;
+    int num_buckets;
+};
+
 
 disaggr_fdset D_FDSET;
 
