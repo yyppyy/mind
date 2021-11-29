@@ -1048,7 +1048,7 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_open, called by %s\n", current->comm);
 	if(flags & O_DISAGGR){
-		fd = disaggr_open_file(filename, flags, mode);
+		int fd = disaggr_open_file(filename, flags, mode);
 		if(fd){
 			return fd;
 		} else{
