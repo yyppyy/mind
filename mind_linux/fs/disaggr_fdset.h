@@ -1,5 +1,6 @@
 #include <linux/slab.h>
-
+#ifndef __DISAGGR_FDSET_H__
+#define __DISAGGR_FDSET_H__
 typedef struct fdset_node fdset_node;
 struct fdset_node{
     int val;
@@ -20,16 +21,18 @@ fdset_node* fdnode_create(int val){
     fdset_node *node = kmalloc(sizeof(fdset_node), GFP_KERNEL);
     node->val = val;
     node->next = NULL;
+    return node;
 }
 
-disaggr_fdset* fdset_create(){
+disaggr_fdset* fdset_create(void){
     disaggr_fdset* fdset = kmalloc(sizeof(disaggr_fdset), GFP_KERNEL);
     if(!fdset){
         return NULL;
     }
     fdset->num_buckets = 8;
     fdset-> buckets = kmalloc(fdset->num_buckets * sizeof(int*), GFP_KERNEL);
-    for(int i = 0; i < fdset->num_buckets; ++i){
+    int i;
+    for(i = 0; i < fdset->num_buckets; ++i){
         fdset->buckets[i] = NULL;
     }
     return fdset;
@@ -39,7 +42,7 @@ disaggr_fdset* fdset_create(){
 
 void fdset_add(disaggr_fdset* set, int val){
     int hash_idx = set->num_buckets % val;
-    int* curr = set->entries[hash_idx];
+    fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
         curr = node;
@@ -81,3 +84,4 @@ void fdset_remove(disaggr_fdset* set, int val){
         curr = curr->next;
     }  
 }
+#endif
