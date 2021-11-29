@@ -19,7 +19,7 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     request->flags = flags;
     request->mode = mode;
     send_msg_to_memory(MT_OPEN, request, sizeof(*request), response, sizeof(*response));
-    return response.file_descriptor;
+    return response->file_descriptor;
 }
 
 int disaggr_read_file(unsigned int fd, char* usr_buf, size_t num_bytes){
