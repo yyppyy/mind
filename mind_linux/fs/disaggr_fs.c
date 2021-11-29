@@ -1,13 +1,6 @@
-
 #include <linux/slab.h>
-#ifndef __DISAGGR_H__
-#define __DISAGGR_H__
-// #include <disagg/network_disagg.h>
+#include "disaggr_fs.h"
 #include "disaggr_types.h"
-#define MT_OPEN 1
-#define MT_CLOSE 2
-#define MT_READ 3
-#define MT_WRITE 4
 
 extern int send_msg_to_memory(u32 msg_type, void *payload, u32 len_payload,
                         void *retbuf, u32 max_len_retbuf);
@@ -47,5 +40,3 @@ int disaggr_close_file(unsigned int fd){
     send_msg_to_memory(MT_CLOSE, request, sizeof(*request), response, sizeof(*response));
     return response->closed;
 }
-
-#endif
