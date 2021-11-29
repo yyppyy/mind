@@ -25,6 +25,9 @@
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
 
+#include "disaggr_fdset.h"
+#include "disaggr.h"
+
 const struct file_operations generic_ro_fops = {
 	.llseek		= generic_file_llseek,
 	.read_iter	= generic_file_read_iter,
@@ -567,6 +570,9 @@ SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_read, called by %s\n", current->comm);
+	if(fdset_contains(&D_FDSET, fd)){
+		return disaggr_read_file(fd, buf, count);
+	}
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
@@ -585,6 +591,9 @@ SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_write, called by %s\n", current->comm);
+	if(fdset_contains(&D_FDSET, fd)){
+		return disaggr_write_file(fd, buf, count);
+	}
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 

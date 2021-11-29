@@ -33,6 +33,8 @@
 #include <linux/compat.h>
 
 #include "internal.h"
+#include "disaggr.h"
+#include "disaggr_fdset.h"
 
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
 	struct file *filp)
@@ -1045,6 +1047,14 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_open, called by %s\n", current->comm);
+	if(flags & O_DISAGGR){
+		fd = disaggr_open_file(filename, flags, mode);
+		if(fd){
+			return fd;
+		} else{
+			return -1;
+		}
+	}
 	struct open_flags op;
 	int fd = build_open_flags(flags, mode, &op);
 	struct filename *tmp;
@@ -1156,6 +1166,10 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_close, called by %s\n", current->comm);
+	if(fdset_contains(&D_FDSET, fd)){
+		fdset_remove(&D_FDSET, fd);
+		return disaggr_close_file(fd);
+	}
 	int retval = __close_fd(current->files, fd);
 
 	/* can't restart close syscall because file table entry was cleared */

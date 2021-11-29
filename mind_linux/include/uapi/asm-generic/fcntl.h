@@ -62,6 +62,9 @@
 #ifndef O_CLOEXEC
 #define O_CLOEXEC	02000000	/* set close_on_exec */
 #endif
+#ifndef O_DISAGGR
+#define O_DISAGGR	08000000	/* set close_on_exec */
+#endif
 
 /*
  * Before Linux 2.6.33 only O_DSYNC semantics were implemented, but using
