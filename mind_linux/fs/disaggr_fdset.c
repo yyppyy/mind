@@ -11,21 +11,21 @@ fdset_node* fdnode_create(int val){
     return node;
 }
 
-disaggr_fdset* fdset_create(void){
-    printk("AYO CREATE\n");
-    printk_safe_flush();
-    disaggr_fdset* fdset = kmalloc(sizeof(disaggr_fdset), GFP_KERNEL);
-    if(!fdset){
-        return NULL;
-    }
-    fdset->num_buckets = 8;
-    fdset-> buckets = kmalloc(fdset->num_buckets * sizeof(int*), GFP_KERNEL);
-    int i;
-    for(i = 0; i < fdset->num_buckets; ++i){
-        fdset->buckets[i] = NULL;
-    }
-    return fdset;
-}
+// disaggr_fdset* fdset_create(void){
+//     printk("AYO CREATE\n");
+//     printk_safe_flush();
+//     disaggr_fdset* fdset = kmalloc(sizeof(disaggr_fdset), GFP_KERNEL);
+//     if(!fdset){
+//         return NULL;
+//     }
+//     fdset->num_buckets = 8;
+//     fdset-> buckets = kmalloc(fdset->num_buckets * sizeof(int*), GFP_KERNEL);
+//     int i;
+//     for(i = 0; i < fdset->num_buckets; ++i){
+//         fdset->buckets[i] = NULL;
+//     }
+//     return fdset;
+// }
 
 
 
@@ -33,7 +33,7 @@ void fdset_add(int val){
     printk("AYO ADD\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = set->num_buckets % val;
+    int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
@@ -51,7 +51,7 @@ int fdset_contains(int val){
     // printk_safe_flush();
     // return 0;
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = set->num_buckets % val;
+    int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
         panic("wrong for that\n");
@@ -67,7 +67,7 @@ void fdset_remove(int val){
     printk("AYO REMOVE\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = set->num_buckets % val;
+    int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* last = curr;
     while(curr){
