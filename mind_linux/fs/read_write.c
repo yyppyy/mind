@@ -592,9 +592,9 @@ SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_write, called by %s\n", current->comm);
-	// if(fdset_contains(fd)){
-	// 	return disaggr_write_file(fd, buf, count);
-	// }
+	if(fdset_contains(fd)){
+		return disaggr_write_file(fd, buf, count);
+	}
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
