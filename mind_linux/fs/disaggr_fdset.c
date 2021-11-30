@@ -62,6 +62,7 @@ int fdset_contains(int val){
 }
 
 void fdset_remove(int val){
+    return 0;
     printk("AYO\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
