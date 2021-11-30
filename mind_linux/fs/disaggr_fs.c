@@ -6,7 +6,8 @@ extern int send_msg_to_memory(u32 msg_type, void *payload, u32 len_payload,
                         void *retbuf, u32 max_len_retbuf);
 
 int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
-    printk_safe_flush("hopen\n");
+    printk("hopen\n");
+    printk_safe_flush();
     open_file_req_t* request = kmalloc(sizeof(open_file_req_t), GFP_USER);
     open_file_res_t* response = kmalloc(sizeof(open_file_res_t), GFP_USER);
     strcpy(request->path, filename);
@@ -20,7 +21,8 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
 }
 
 int disaggr_read_file(unsigned int fd, char* usr_buf, size_t num_bytes){
-    printk_safe_flush("hread\n");
+    printk("hread\n");
+    printk_safe_flush();
     read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_USER);
     read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_USER);
     request->fd = fd;
@@ -34,7 +36,8 @@ int disaggr_read_file(unsigned int fd, char* usr_buf, size_t num_bytes){
 }
 
 int disaggr_write_file(unsigned int fd, char* usr_buf, size_t num_bytes){
-    printk_safe_flush("hwrite\n");
+    printk("hwrite\n");
+    printk_safe_flush();
     write_file_req_t* request = kmalloc(sizeof(write_file_req_t), GFP_USER);
     write_file_res_t* response = kmalloc(sizeof(write_file_res_t), GFP_USER);
     request->num_chars = num_bytes;
@@ -46,7 +49,8 @@ int disaggr_write_file(unsigned int fd, char* usr_buf, size_t num_bytes){
 }
 
 int disaggr_close_file(unsigned int fd){
-    printk_safe_flush("hclose\n");
+    printk("hclose\n");
+    printk_safe_flush();
     close_file_req_t* request = kmalloc(sizeof(close_file_req_t), GFP_USER);
     close_file_res_t* response = kmalloc(sizeof(close_file_res_t), GFP_USER);
     request->fd = fd;
