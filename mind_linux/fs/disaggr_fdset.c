@@ -12,7 +12,7 @@ fdset_node* fdnode_create(int val){
 }
 
 disaggr_fdset* fdset_create(void){
-    printk("AYO\n");
+    printk("AYO CREATE\n");
     printk_safe_flush();
     disaggr_fdset* fdset = kmalloc(sizeof(disaggr_fdset), GFP_KERNEL);
     if(!fdset){
@@ -30,7 +30,7 @@ disaggr_fdset* fdset_create(void){
 
 
 void fdset_add(int val){
-    printk("AYO\n");
+    printk("AYO ADD\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
@@ -47,13 +47,14 @@ void fdset_add(int val){
 }
 
 int fdset_contains(int val){
-    printk("AYO\n");
-    printk_safe_flush();
-    return 0;
+    // printk("AYO CONTAINS\n");
+    // printk_safe_flush();
+    // return 0;
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
+        panic("wrong for that\n");
         if(curr->val == val){
             return 1;
         }
@@ -63,7 +64,7 @@ int fdset_contains(int val){
 }
 
 void fdset_remove(int val){
-    printk("AYO\n");
+    printk("AYO REMOVE\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
