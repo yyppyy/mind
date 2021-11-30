@@ -1047,14 +1047,15 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_open, called by %s\n", current->comm);
-	if(flags & O_DISAGGR){
-		int fd = disaggr_open_file(filename, flags, mode);
-		if(fd){
-			return fd;
-		} else{
-			return -1;
-		}
-	}
+	// if(flags & O_DISAGGR){
+	// 	int fd = disaggr_open_file(filename, flags, mode);
+	// 	if(fd){
+	// 		fdset_add(fd);
+	// 		return fd;
+	// 	} else{
+	// 		return -1;
+	// 	}
+	// }
 	struct open_flags op;
 	int fd = build_open_flags(flags, mode, &op);
 	struct filename *tmp;
@@ -1166,10 +1167,10 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_close, called by %s\n", current->comm);
-	if(fdset_contains(fd)){
-		fdset_remove(fd);
-		return disaggr_close_file(fd);
-	}
+	// if(fdset_contains(fd)){
+	// 	fdset_remove(fd);
+	// 	return disaggr_close_file(fd);
+	// }
 	int retval = __close_fd(current->files, fd);
 
 	/* can't restart close syscall because file table entry was cleared */
