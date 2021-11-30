@@ -47,9 +47,9 @@ void fdset_add(int val){
 }
 
 int fdset_contains(int val){
-    return 0;
     printk("AYO\n");
     printk_safe_flush();
+    return 0;
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
     fdset_node* curr = set->buckets[hash_idx];
