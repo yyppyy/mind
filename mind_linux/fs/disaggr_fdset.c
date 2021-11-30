@@ -62,7 +62,7 @@ int fdset_contains(int val){
 }
 
 void fdset_remove(int val){
-    printk("AYO\n")
+    printk("AYO\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = set->num_buckets % val;
