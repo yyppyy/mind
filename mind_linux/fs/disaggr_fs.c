@@ -8,6 +8,9 @@ extern int send_msg_to_memory(u32 msg_type, void *payload, u32 len_payload,
 int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     printk("hopen\n");
     printk_safe_flush();
+    if(!filename){
+        return -5;
+    }
     open_file_req_t* request = kmalloc(sizeof(open_file_req_t), GFP_USER);
     if(!request){
         return -1;
@@ -15,7 +18,7 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     
     open_file_res_t* response = kmalloc(sizeof(open_file_res_t), GFP_USER);
     if(!response){
-        return -1;
+        return -2;
     }
     strcpy(request->path, filename);
     request->flags = flags;
