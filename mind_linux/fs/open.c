@@ -1047,15 +1047,15 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_open, called by %s\n", current->comm);
-	// if(flags & O_DISAGGR){
-	// 	int fd = disaggr_open_file(filename, flags, mode);
-	// 	if(fd){
-	// 		fdset_add(fd);
-	// 		return fd;
-	// 	} else{
-	// 		return -1;
-	// 	}
-	// }
+	if(flags & O_DISAGGR){
+		int fd = disaggr_open_file(filename, flags, mode);
+		if(fd){
+			fdset_add(fd);
+			return fd;
+		} else{
+			return -1;
+		}
+	}
 	struct open_flags op;
 	int fd = build_open_flags(flags, mode, &op);
 	struct filename *tmp;
