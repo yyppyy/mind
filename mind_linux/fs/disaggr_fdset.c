@@ -33,11 +33,11 @@ void fdset_add(int val){
     printk("AYOADD\n");
     printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = val % NUM_BUCKETS;
+    int hash_idx = val % NUM_FDSET_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
-        printk("BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
+        printk(KERN_INFO "BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
         printk_safe_flush();
         curr = node;
         return;
@@ -52,7 +52,7 @@ void fdset_add(int val){
 
 int fdset_contains(int val){
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = val % NUM_BUCKETS;
+    int hash_idx = val % NUM_FDSET_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
         if(curr->val == val){
@@ -69,7 +69,7 @@ void fdset_remove(int val){
     // printk("AYO REMOVE\n");
     // printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
-    int hash_idx = val % NUM_BUCKETS;
+    int hash_idx = val % NUM_FDSET_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* last = curr;
     while(curr){

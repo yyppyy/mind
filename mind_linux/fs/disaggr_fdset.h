@@ -1,7 +1,7 @@
 #include <linux/slab.h>
 #ifndef __DISAGGR_FDSET_H__
 #define __DISAGGR_FDSET_H__
-#define NUM_BUCKETS 8
+#define NUM_FDSET_BUCKETS 8
 typedef struct fdset_node fdset_node;
 struct fdset_node{
     int val;
@@ -10,7 +10,7 @@ struct fdset_node{
 
 typedef struct disaggr_fdset disaggr_fdset;
 struct disaggr_fdset{
-    fdset_node* buckets[NUM_BUCKETS];
+    fdset_node* buckets[NUM_FDSET_BUCKETS];
     int num_buckets;
 };
 
