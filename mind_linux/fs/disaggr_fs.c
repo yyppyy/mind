@@ -37,6 +37,7 @@ int disaggr_read_file(unsigned int fd, char* usr_buf, size_t num_bytes){
     printk_safe_flush();
     read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_USER);
     read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_USER);
+    memset(request,0,sizeof(*request));
     request->fd = fd;
     request->num_bytes = num_bytes;
     send_msg_to_memory(MT_READ, request, sizeof(*request),response, sizeof(*response));
