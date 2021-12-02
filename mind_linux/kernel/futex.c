@@ -3588,8 +3588,6 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		return -EFAULT;
 	}
 
-	printk("val %u", val);
-	printk("uaddr val %u", uaddr_val);
 	if (cmd == FUTEX_WAIT && val == uaddr_val && !strcmp(current->comm, "test")) {
 		printk("in futex_wait");	
 		u32 * poll = kmalloc(sizeof(u32), GFP_KERNEL);
