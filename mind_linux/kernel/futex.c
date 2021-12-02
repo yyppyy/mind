@@ -3599,7 +3599,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		u32 max_len_retbuf = sizeof(*poll);
                 
 		while (*poll) {
-			send_msg_to_memory(type, NULL, len_payload, poll, sizeof(u32));
+			send_msg_to_memory(type, &type, sizeof(type), poll, sizeof(u32));
 		}
 
 		return 0;
@@ -3612,7 +3612,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
                 u32 type = 0;
                 u32 len_payload = sizeof(NULL);
                 u32 max_len_retbuf = sizeof(*reply);
-		send_msg_to_memory(type, NULL, len_payload, reply, sizeof(u32));
+		send_msg_to_memory(type, &type, sizeof(type), reply, sizeof(u32));
 
                 return 0;
 	}
