@@ -39,11 +39,11 @@ void fdset_add(int val){
     if(!curr){
         printk(KERN_INFO "BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
         printk_safe_flush();
-        curr = node;
+        set->buckets[hash_idx] = node;
         return;
     }
     while(curr->next){
-        printk("IT ALREADY EXISTS?\n");
+        printk(KERN_INFO "IT ALREADY EXISTS?\n");
         printk_safe_flush();
         curr = curr->next;
     }
@@ -56,7 +56,7 @@ int fdset_contains(int val){
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
         if(curr->val == val){
-            printk("AYOCONTAINS\n");
+            printk(KERN_INFO "AYOCONTAINS\n");
             printk_safe_flush();
             return 1;
         }
