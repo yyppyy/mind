@@ -32,16 +32,16 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     return fd;
 }
 
-int disaggr_read_file(unsigned int fd, char* usr_buf, size_t num_bytes){
+int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     printk("hread\n");
     printk_safe_flush();
-    read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_USER);
-    read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_USER);
-    memset(request,0,sizeof(*request));
+    read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_KERNEL);
+    read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_KERNEL);
+    memset(request, 0, sizeof(*request));
     request->fd = fd;
     request->num_bytes = num_bytes;
     send_msg_to_memory(MT_READ, request, sizeof(*request),response, sizeof(*response));
-    strncpy(usr_buf, response->read_buf, response->bytes_read);
+    copy_to_user(usr_buf, response->read_buf, response->bytes_read);
     int bytes_read = response->bytes_read;
     kfree(request);
     kfree(response);
