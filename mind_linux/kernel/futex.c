@@ -3595,11 +3595,10 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		u32 * poll = kmalloc(sizeof(u32), GFP_KERNEL);
 		*poll = 1;	
 		u32 type = 1;
-		u32 len_payload = sizeof(NULL);
-		u32 max_len_retbuf = sizeof(*poll);
-                
+               	u32 payload = 1;
+
 		while (*poll) {
-			send_msg_to_memory(type, &type, sizeof(type), poll, sizeof(u32));
+			send_msg_to_memory(type, &payload, sizeof(payload), poll, sizeof(u32));
 		}
 
 		return 0;
@@ -3610,9 +3609,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
                 u32 type = 0;
-                u32 len_payload = sizeof(NULL);
-                u32 max_len_retbuf = sizeof(*reply);
-		send_msg_to_memory(type, &type, sizeof(type), reply, sizeof(u32));
+		u32 payload = 0;
+		send_msg_to_memory(type, &payload, sizeof(payload), reply, sizeof(u32));
 
                 return 0;
 	}
