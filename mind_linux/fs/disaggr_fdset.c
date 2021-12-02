@@ -54,7 +54,6 @@ int fdset_contains(int val){
     int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
-        panic("wrong for that\n");
         if(curr->val == val){
             return 1;
         }
