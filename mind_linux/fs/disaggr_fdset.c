@@ -30,8 +30,8 @@ fdset_node* fdnode_create(int val){
 
 
 void fdset_add(int val){
-    // printk("AYO ADD\n");
-    // printk_safe_flush();
+    printk("AYOADD\n");
+    printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
@@ -47,14 +47,13 @@ void fdset_add(int val){
 }
 
 int fdset_contains(int val){
-    // printk("AYO CONTAINS\n");
-    // printk_safe_flush();
-    // return 0;
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = val % NUM_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     while(curr){
         if(curr->val == val){
+            printk("AYOCONTAINS\n");
+            printk_safe_flush();
             return 1;
         }
         curr = curr->next;
