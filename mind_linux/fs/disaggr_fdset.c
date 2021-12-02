@@ -37,10 +37,14 @@ void fdset_add(int val){
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
+        printk("BASECASE bucket=%d; pointer=%d;\n");
+        printk_safe_flush();
         curr = node;
         return;
     }
     while(curr->next){
+        printk("IT ALREADY EXISTS?\n");
+        printk_safe_flush();
         curr = curr->next;
     }
     curr->next = node;
