@@ -37,7 +37,7 @@ void fdset_add(int val){
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
-        printk("BASECASE bucket=%d; pointer=%d;\n");
+        printk("BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
         printk_safe_flush();
         curr = node;
         return;
