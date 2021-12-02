@@ -3596,9 +3596,10 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
                	u32 payload = 1;
 
 		while (*poll) {
+			printk("in poll");
 			send_msg_to_memory(type, &payload, sizeof(payload), poll, sizeof(u32));
 		}
-
+		printk("after poll");
 		return 0;
 	}
 
