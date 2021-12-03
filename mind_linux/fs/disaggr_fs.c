@@ -34,6 +34,7 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
 
 int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     printk("hread\n");
+    printk("hello I'm sys_read, called by %s\n", current->comm);
     printk_safe_flush();
     read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_KERNEL);
     read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_KERNEL);
