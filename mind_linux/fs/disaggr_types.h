@@ -19,6 +19,7 @@ typedef struct {
 } read_file_res_t;
 
 typedef struct {
+    int fd;
     char write_buf[4096];
     size_t num_chars;
 } write_file_req_t;

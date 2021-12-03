@@ -48,13 +48,16 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     return bytes_read;
 }
 
-int disaggr_write_file(unsigned int fd, char* usr_buf, size_t num_bytes){
+int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_bytes){
     printk("hwrite\n");
     printk_safe_flush();
     write_file_req_t* request = kmalloc(sizeof(write_file_req_t), GFP_KERNEL);
     write_file_res_t* response = kmalloc(sizeof(write_file_res_t), GFP_KERNEL);
+    memset(request, 0, sizeof(*request));
     request->num_chars = num_bytes;
-    send_msg_to_memory(MT_WRITE, request, sizeof(*request),response, sizeof(*response));
+    request->fd = fd;
+    strncpy_from_user(request->write_buf, buf, 4096);
+    send_msg_to_memory(MT_WRITE, request, sizeof(*request), response, sizeof(*response));
     int bytes_written = response->bytes_written;
     kfree(request);
     kfree(response);
