@@ -8,16 +8,19 @@ extern int send_msg_to_memory(u32 msg_type, void *payload, u32 len_payload,
 
 int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     printk("hopen\n");
-    printk_safe_flush();
+    
     
     open_file_req_t* request = kmalloc(sizeof(open_file_req_t), GFP_KERNEL);
     
     if(!request){
+        printk("FAILED REQ ALLOC\n");
+        
         return -1;
     }
     
     open_file_res_t* response = kmalloc(sizeof(open_file_res_t), GFP_KERNEL);
     if(!response){
+        printk("FAILED RES ALLOC\n");
         return -1;
     }
     memset(request,0,sizeof(*request));
@@ -25,8 +28,10 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     strncpy_from_user(request->path, filename, 256);
     request->flags = flags;
     request->mode = mode;
-    send_msg_to_memory(MT_OPEN, request, sizeof(*request), response, sizeof(*response));
+    int open_res = send_msg_to_memory(MT_OPEN, request, sizeof(*request), response, sizeof(*response));
+    printk("OPEN RES: %d\n", open_res);
     int fd = response->file_descriptor;
+    printk("Returned fd: %d\n", fd);
     kfree(request);
     kfree(response);
     return fd;
@@ -38,7 +43,7 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     if(!strcmp(current->comm, "in:imklog")){
         return 0;
     }
-    printk_safe_flush();
+    
     read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_KERNEL);
     read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_KERNEL);
     memset(request, 0, sizeof(*request));
@@ -54,7 +59,7 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
 
 int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_bytes){
     printk("hwrite\n");
-    printk_safe_flush();
+    
     write_file_req_t* request = kmalloc(sizeof(write_file_req_t), GFP_KERNEL);
     write_file_res_t* response = kmalloc(sizeof(write_file_res_t), GFP_KERNEL);
     memset(request, 0, sizeof(*request));
@@ -70,7 +75,7 @@ int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_byte
 
 int disaggr_close_file(unsigned int fd){
     printk("hclose\n");
-    printk_safe_flush();
+    
     close_file_req_t* request = kmalloc(sizeof(close_file_req_t), GFP_KERNEL);
     close_file_res_t* response = kmalloc(sizeof(close_file_res_t), GFP_KERNEL);
     request->fd = fd;
