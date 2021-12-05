@@ -58,7 +58,7 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     request->fd = fd;
     request->num_bytes = num_bytes;
     int mind_res = send_msg_to_memory(MT_READ, request, sizeof(*request),response, sizeof(*response));
-    printk("MIND READ RES: %d\n", mind_res);
+    printk("MIND READ RES: %d; supposed to be %ld\n", mind_res, sizeof(*response));
     printk("READ: %s\n", response->read_buf);
     printk("BYTES READ: %d\n", response->bytes_read);
     copy_to_user(usr_buf, response->read_buf, response->bytes_read);
@@ -81,7 +81,8 @@ int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_byte
     request->num_chars = num_bytes;
     request->fd = fd;
     strncpy_from_user(request->write_buf, buf, 4096);
-    send_msg_to_memory(MT_WRITE, request, sizeof(*request), response, sizeof(*response));
+    int mind_res = send_msg_to_memory(MT_WRITE, request, sizeof(*request), response, sizeof(*response));
+    printk("MIND Write RES: %d; supposed to be %ld\n", mind_res, sizeof(*response));
     int bytes_written = response->bytes_written;
     kfree(request);
     kfree(response);
