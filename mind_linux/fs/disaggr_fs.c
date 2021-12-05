@@ -39,7 +39,8 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     printk("hread\n");
     printk("hello I'm disaggr_read, called by %s\n", current->comm);
     if(!strcmp(current->comm, "in:imklog")){
-        *usr_buf = 0;
+        int end = 0;
+        copy_to_user(usr_buf, &end, sizeof(end));
         return 0;
     }
     
