@@ -9,7 +9,6 @@ extern int send_msg_to_memory(u32 msg_type, void *payload, u32 len_payload,
 int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     printk("hopen\n");
     
-    
     open_file_req_t* request = kmalloc(sizeof(open_file_req_t), GFP_KERNEL);
     
     if(!request){
