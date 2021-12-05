@@ -14,7 +14,6 @@ int disaggr_open_file(const char __user *filename, int flags, umode_t mode ){
     
     if(!request){
         printk("FAILED REQ ALLOC\n");
-        
         return -1;
     }
     
@@ -41,11 +40,20 @@ int disaggr_read_file(unsigned int fd, char __user* usr_buf, size_t num_bytes){
     printk("hread\n");
     printk("hello I'm disaggr_read, called by %s\n", current->comm);
     if(!strcmp(current->comm, "in:imklog")){
+        *user_buf = 0;
         return 0;
     }
     
     read_file_req_t* request = kmalloc(sizeof(read_file_req_t), GFP_KERNEL);
+    if(!request){
+        printk("FAILED REQ ALLOC\n");
+        return -1;
+    }
     read_file_res_t* response = kmalloc(sizeof(read_file_res_t), GFP_KERNEL);
+    if(!response){
+        printk("FAILED RES ALLOC\n");
+        return -1;
+    }
     memset(request, 0, sizeof(*request));
     request->fd = fd;
     request->num_bytes = num_bytes;
@@ -62,6 +70,10 @@ int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_byte
     
     write_file_req_t* request = kmalloc(sizeof(write_file_req_t), GFP_KERNEL);
     write_file_res_t* response = kmalloc(sizeof(write_file_res_t), GFP_KERNEL);
+    if(!response){
+        printk("FAILED RES ALLOC\n");
+        return -1;
+    }
     memset(request, 0, sizeof(*request));
     request->num_chars = num_bytes;
     request->fd = fd;
@@ -78,6 +90,10 @@ int disaggr_close_file(unsigned int fd){
     
     close_file_req_t* request = kmalloc(sizeof(close_file_req_t), GFP_KERNEL);
     close_file_res_t* response = kmalloc(sizeof(close_file_res_t), GFP_KERNEL);
+    if(!response){
+        printk("FAILED RES ALLOC\n");
+        return -1;
+    }
     request->fd = fd;
     send_msg_to_memory(MT_CLOSE, request, sizeof(*request), response, sizeof(*response));
     int closed = response->closed;
