@@ -35,6 +35,7 @@
 #include "internal.h"
 #include "disaggr_fs.h"
 #include "disaggr_fdset.h"
+#include "disaggr_fdproc.h"
 
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
 	struct file *filp)
