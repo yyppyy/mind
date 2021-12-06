@@ -1049,7 +1049,8 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 		printk("hello I'm sys_open, called by %s\n", current->comm);
 	if((flags & O_DISAGGR) == O_DISAGGR){
 		int fd = disaggr_open_file(filename, flags, mode);
-		if(fd){
+		if(fd != -1){
+			fdproc_add(fd);
 			fdset_add(fd);
 			return fd;
 		} else{
@@ -1167,8 +1168,9 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_close, called by %s\n", current->comm);
-	if(fdset_contains(fd)){
+	if(fdproc_contains(current_uid().val) && fdset_contains(fd)){
 		fdset_remove(fd);
+		fdproc_remove(current_uid().val);
 		return disaggr_close_file(fd);
 	}
 	int retval = __close_fd(current->files, fd);

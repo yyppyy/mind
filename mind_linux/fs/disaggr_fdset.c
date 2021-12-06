@@ -31,20 +31,17 @@ fdset_node* fdnode_create(int val){
 
 void fdset_add(int val){
     printk("AYOADD\n");
-    printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = val % NUM_FDSET_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
     fdset_node* node = fdnode_create(val);
     if(!curr){
         printk(KERN_INFO "BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
-        printk_safe_flush();
         set->buckets[hash_idx] = node;
         return;
     }
     while(curr->next){
         printk(KERN_INFO "IT ALREADY EXISTS?\n");
-        printk_safe_flush();
         curr = curr->next;
     }
     curr->next = node;
@@ -57,7 +54,6 @@ int fdset_contains(int val){
     while(curr){
         if(curr->val == val){
             printk(KERN_INFO "AYOCONTAINS\n");
-            printk_safe_flush();
             return 1;
         }
         curr = curr->next;
@@ -66,8 +62,6 @@ int fdset_contains(int val){
 }
 
 void fdset_remove(int val){
-    // printk("AYO REMOVE\n");
-    // printk_safe_flush();
     disaggr_fdset* set = &D_FDSET;
     int hash_idx = val % NUM_FDSET_BUCKETS;
     fdset_node* curr = set->buckets[hash_idx];
