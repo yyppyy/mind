@@ -1051,7 +1051,7 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	if((flags & O_DISAGGR) == O_DISAGGR){
 		int fd = disaggr_open_file(filename, flags, mode);
 		if(fd != -1){
-			fdproc_add(fd);
+			fdproc_add(current_uid().val);
 			fdset_add(fd);
 			return fd;
 		} else{
