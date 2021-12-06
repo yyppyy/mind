@@ -13,7 +13,7 @@ obj-y :=	open.o read_write.o file_table.o super.o \
 		seq_file.o xattr.o libfs.o fs-writeback.o \
 		pnode.o splice.o sync.o utimes.o \
 		stack.o fs_struct.o statfs.o fs_pin.o nsfs.o \
-		disaggr_fs.o disaggr_fdset.o
+		disaggr_fs.o disaggr_fdset.o disaggr_fdproc.o
 
 obj-$(CONFIG_COMPUTE_NODE)	+= exec_disagg.o
 
