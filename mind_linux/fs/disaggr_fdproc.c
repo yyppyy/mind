@@ -4,7 +4,7 @@
 
 disaggr_fdproc_set D_FDPROC;
 
-fdproc_node* fdnode_create(int val){
+fdproc_node* fdproc_node_create(int val){
     fdproc_node *node = kmalloc(sizeof(fdproc_node), GFP_KERNEL);
     node->val = val;
     node->next = NULL;
@@ -16,7 +16,7 @@ void fdproc_add(int val){
     disaggr_fdproc_set* set = &D_FDPROC;
     int hash_idx = val % NUM_FDPROC_BUCKETS;
     fdproc_node* curr = set->buckets[hash_idx];
-    fdproc_node* node = fdnode_create(val);
+    fdproc_node* node = fdproc_node_create(val);
     if(!curr){
         printk(KERN_INFO "BASECASE bucket=%d; pointer=%p;\n", hash_idx, node);
         printk_safe_flush();

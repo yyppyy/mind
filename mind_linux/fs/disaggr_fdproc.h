@@ -15,7 +15,7 @@ struct disaggr_fdproc_set{
 };
 
 //current->tgid; to allow for multiple processes.
-fdproc_node* fdnode_create(int val);
+fdproc_node* fdproc_node_create(int val);
 
 disaggr_fdproc_set* fdproc_create(void);
 
