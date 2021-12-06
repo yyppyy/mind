@@ -571,7 +571,7 @@ SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 {
 	if (current_uid().val == 1002)
 		printk("hello I'm sys_read, called by %s\n", current->comm);
-	if(fd_proc_contains(current_uid().val) && fdset_contains(fd)){
+	if(fdproc_contains(current_uid().val) && fdset_contains(fd)){
 		return disaggr_read_file(fd, buf, count);
 	}
 	struct fd f = fdget_pos(fd);

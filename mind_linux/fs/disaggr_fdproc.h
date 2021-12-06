@@ -8,7 +8,7 @@ struct fdproc_node{
     fdproc_node* next;
 };
 
-typedef struct disaggr_fdproc disaggr_fdproc;
+typedef struct disaggr_fdproc_set disaggr_fdproc_set;
 struct disaggr_fdproc_set{
     fdproc_node* buckets[NUM_FDPROC_BUCKETS];
     int num_buckets;
