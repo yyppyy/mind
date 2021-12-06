@@ -80,7 +80,7 @@ int disaggr_write_file(unsigned int fd, const char __user * buf, size_t num_byte
     memset(request, 0, sizeof(*request));
     request->num_chars = num_bytes;
     request->fd = fd;
-    strncpy_from_user(request->write_buf, buf, 4096);
+    strncpy_from_user(request->write_buf, buf, 256);
     int mind_res = send_msg_to_memory(MT_WRITE, request, sizeof(*request), response, sizeof(*response));
     printk("MIND Write RES: %d; supposed to be %ld\n", mind_res, sizeof(*response));
     int bytes_written = response->bytes_written;
