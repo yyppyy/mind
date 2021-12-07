@@ -3592,10 +3592,11 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		printk("in futex_wait");	
 		u32 * poll = kmalloc(sizeof(u32), GFP_KERNEL);
 		*poll = 1;	
-		u32 type = 1;
+		u32 type = 5;
+		//Value doesnt matter; Not used
                	u32 payload = 1;
 
-		u32 wait = 2;
+		u32 wait = 7;
 		send_msg_to_memory(type, &payload, sizeof(payload), poll, sizeof(u32));
 		while (*poll) {
 			printk("in poll");
@@ -3609,7 +3610,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		printk("in futex_wake");
 		u32 * reply = kmalloc(sizeof(u32), GFP_KERNEL);
 		
-                u32 type = 0;
+                u32 type = 6;
 		u32 payload = 0;
 		send_msg_to_memory(type, &payload, sizeof(payload), reply, sizeof(u32));
 
