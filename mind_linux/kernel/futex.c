@@ -3574,6 +3574,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
 		struct timespec __user *, utime, u32 __user *, uaddr2,
 		u32, val3)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_futex, called by %s\n", current->comm);
 	struct timespec ts;
 	ktime_t t, *tp = NULL;
 	u32 val2 = 0;

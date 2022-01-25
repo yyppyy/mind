@@ -33,6 +33,9 @@
 #include <linux/compat.h>
 
 #include "internal.h"
+#include "disaggr_fs.h"
+#include "disaggr_fdset.h"
+#include "disaggr_fdproc.h"
 
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
 	struct file *filp)
@@ -1043,6 +1046,18 @@ EXPORT_SYMBOL(filp_clone_open);
 
 long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_open, called by %s\n", current->comm);
+	if((flags & O_DISAGGR) == O_DISAGGR){
+		int fd = disaggr_open_file(filename, flags, mode);
+		if(fd != -1){
+			fdproc_add(current_uid().val);
+			fdset_add(fd);
+			return fd;
+		} else{
+			return -1;
+		}
+	}
 	struct open_flags op;
 	int fd = build_open_flags(flags, mode, &op);
 	struct filename *tmp;
@@ -1152,6 +1167,13 @@ EXPORT_SYMBOL(filp_close);
  */
 SYSCALL_DEFINE1(close, unsigned int, fd)
 {
+	if (current_uid().val == 1002)
+		printk("hello I'm sys_close, called by %s\n", current->comm);
+	if(fdproc_contains(current_uid().val) && fdset_contains(fd)){
+		fdset_remove(fd);
+		fdproc_remove(current_uid().val);
+		return disaggr_close_file(fd);
+	}
 	int retval = __close_fd(current->files, fd);
 
 	/* can't restart close syscall because file table entry was cleared */
